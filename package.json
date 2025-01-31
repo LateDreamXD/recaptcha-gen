@@ -1,0 +1,27 @@
+{
+  "name": "recaptcha-gen",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "dom-to-image": "^2.6.0",
+    "vue": "^3.5.13"
+  },
+  "devDependencies": {
+    "@types/dom-to-image": "^2",
+    "@vitejs/plugin-vue": "^5.2.1",
+    "sass-embedded": "^1.83.4",
+    "typescript": "^5.7.3",
+    "vite": "^6.0.11"
+  },
+  "author": {
+    "name": "LateDream",
+    "email": "latedream_@outlook.com",
+    "url": "https://github.com/LateDreamXD"
+  },
+  "packageManager": "yarn@4.6.0"
+}
