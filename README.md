@@ -19,10 +19,14 @@ yarn dev
 ```
 
 ## 技术栈
-语言: TypeScript, scss  
-框架打包: Vue3, Vite  
-图片生成: dom-to-image  
-还有: Google reCaptcha 样式表
+- 语言: TypeScript, scss
+- 框架打包: Vue3, Vite
+- 图片生成: dom-to-image
+- 样式表: Pico CSS, Google reCaptcha 样式表
 
 ## 许可
 以[MPL2.0](http://mozilla.org/MPL/2.0/)许可开源
+
+<p align="center">
+Made with ❤️ by <a href="https://latedream.us.kg/about/" target="_blank" rel="noopener">LateDream</a>
+</p>

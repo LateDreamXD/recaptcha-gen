@@ -1,0 +1,1 @@
+declare const __VUE_APP_VERSION__: string;

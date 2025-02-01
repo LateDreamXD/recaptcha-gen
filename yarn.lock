@@ -274,6 +274,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@picocss/pico@npm:^2.0.6":
+  version: 2.0.6
+  resolution: "@picocss/pico@npm:2.0.6"
+  checksum: 10c0/ed93254e3b0bf6d80c881f8e6d3b4070ff1cefe8f0e084f1d275a486225604a3fd164fbc0b757f50f29623782c80e1d98afdabcd6b6f013c23568b023af39b3e
+  languageName: node
+  linkType: hard
+
 "@pkgjs/parseargs@npm:^0.11.0":
   version: 0.11.0
   resolution: "@pkgjs/parseargs@npm:0.11.0"
@@ -425,6 +432,15 @@ __metadata:
   version: 1.0.6
   resolution: "@types/estree@npm:1.0.6"
   checksum: 10c0/cdfd751f6f9065442cd40957c07fd80361c962869aa853c1c2fd03e101af8b9389d8ff4955a43a6fcfa223dd387a089937f95be0f3eec21ca527039fd2d9859a
+  languageName: node
+  linkType: hard
+
+"@types/node@npm:^22.13.0":
+  version: 22.13.0
+  resolution: "@types/node@npm:22.13.0"
+  dependencies:
+    undici-types: "npm:~6.20.0"
+  checksum: 10c0/9cf6358b2863ae7bf9588ca1cc3d87f6a6289c3880e95a046a188760666870e2c12502df8b0a473bec8aa8ffee85e025d60382a6104b10f197120793235b2c22
   languageName: node
   linkType: hard
 
@@ -1266,7 +1282,9 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "recaptcha-gen@workspace:."
   dependencies:
+    "@picocss/pico": "npm:^2.0.6"
     "@types/dom-to-image": "npm:^2"
+    "@types/node": "npm:^22.13.0"
     "@vitejs/plugin-vue": "npm:^5.2.1"
     dom-to-image: "npm:^2.6.0"
     sass-embedded: "npm:^1.83.4"
@@ -1787,6 +1805,13 @@ __metadata:
     tsc: bin/tsc
     tsserver: bin/tsserver
   checksum: 10c0/6fd7e0ed3bf23a81246878c613423730c40e8bdbfec4c6e4d7bf1b847cbb39076e56ad5f50aa9d7ebd89877999abaee216002d3f2818885e41c907caaa192cc4
+  languageName: node
+  linkType: hard
+
+"undici-types@npm:~6.20.0":
+  version: 6.20.0
+  resolution: "undici-types@npm:6.20.0"
+  checksum: 10c0/68e659a98898d6a836a9a59e6adf14a5d799707f5ea629433e025ac90d239f75e408e2e5ff086afc3cace26f8b26ee52155293564593fbb4a2f666af57fc59bf
   languageName: node
   linkType: hard
 

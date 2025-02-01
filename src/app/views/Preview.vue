@@ -1,25 +1,35 @@
 <script setup lang="ts">
-import {ref, onMounted, defineExpose} from 'vue';
-import {copyImg, saveImg} from '../libs/actions';
+import {useTemplateRef, ref, defineExpose} from 'vue';
+import {file2base64} from './apis';
 
-const main = ref<HTMLDivElement>(document.querySelector('#main')!);
-const imgEles = ref<HTMLImageElement[]>([]);
-const targetText = ref('晚梦');
+const mainRef = useTemplateRef<HTMLDivElement>('main');
+const targetText = ref<string>('晚梦');
+const showTip = ref<boolean>(true);
+const showCtrls = ref<boolean>(false);
 
 const lowPixelMode = (value: boolean) => {
-	main.value.classList.toggle('low-pixel-mode', value);
+	mainRef.value!.classList.toggle('low-pixel-mode', value);
 }
 
-onMounted(() => {
-	imgEles.value = Array.from(main.value.querySelectorAll('.rc-image-tile-33'));
-});
+const setImg = (target: HTMLImageElement) => {
+	const input = document.createElement('input');
+	input.type = 'file';
+	input.accept = 'image/*';
+	input.click();
+	input.addEventListener('change', async() => {
+		const files = input.files;
+		if(!!files && files.length > 0)
+			target.src = await file2base64(files![0]);
+		input.remove();
+	});
+}
 
 defineExpose({
 	targetText,
-	imgEles,
+	mainNode: mainRef,
 	lowPixelMode,
-	CopyImg() {copyImg(main.value)},
-	SaveImg() {saveImg(main.value)}
+	showTip,
+	showCtrls
 });
 </script>
 
@@ -33,7 +43,7 @@ defineExpose({
 					<div class="rc-imageselect-desc-wrapper">
 						<div class="rc-imageselect-desc-no-canonical" style="width: 352px; font-size: 12px;">
 							请选择包含<strong :textContent="targetText" style="font-size: 28px;"></strong>的所有图片。<span
-								style="font-size: 14px;">在没有新图片可以点按后，请点击“验证”。</span></div>
+							v-if="showTip" style="font-size: 14px;">在没有新图片可以点按后，请点击“验证”。</span></div>
 					</div>
 					<div class="rc-imageselect-progress"></div>
 				</div>
@@ -46,7 +56,7 @@ defineExpose({
 									<td role="button" tabindex="4" class="rc-imageselect-tile" aria-label="图片验证">
 										<div class="rc-image-tile-target">
 											<div class="rc-image-tile-wrapper" style="width: 126px; height: 126px">
-												<img class="rc-image-tile-33"
+												<img @click="setImg(($event.target as HTMLImageElement))" class="rc-image-tile-33"
 													src="https://i.latedream.us.kg/static/xs_avatar_4k_.jpg"
 													alt="" style="top:0%;">
 												<div class="rc-image-tile-overlay"></div>
@@ -57,7 +67,7 @@ defineExpose({
 									<td role="button" tabindex="5" class="rc-imageselect-tile" aria-label="图片验证">
 										<div class="rc-image-tile-target">
 											<div class="rc-image-tile-wrapper" style="width: 126px; height: 126px">
-												<img class="rc-image-tile-33"
+												<img @click="setImg(($event.target as HTMLImageElement))" class="rc-image-tile-33"
 													src="https://i.latedream.us.kg/static/xs_avatar_4k_.jpg"
 													alt="" style="top:0%;">
 												<div class="rc-image-tile-overlay"></div>
@@ -68,7 +78,7 @@ defineExpose({
 									<td role="button" tabindex="6" class="rc-imageselect-tile" aria-label="图片验证">
 										<div class="rc-image-tile-target">
 											<div class="rc-image-tile-wrapper" style="width: 126px; height: 126px">
-												<img class="rc-image-tile-33"
+												<img @click="setImg(($event.target as HTMLImageElement))" class="rc-image-tile-33"
 													src="https://i.latedream.us.kg/static/xs_avatar_4k_.jpg"
 													alt="" style="top:0%;">
 												<div class="rc-image-tile-overlay"></div>
@@ -81,7 +91,7 @@ defineExpose({
 									<td role="button" tabindex="7" class="rc-imageselect-tile" aria-label="图片验证">
 										<div class="rc-image-tile-target">
 											<div class="rc-image-tile-wrapper" style="width: 126px; height: 126px">
-												<img class="rc-image-tile-33"
+												<img @click="setImg(($event.target as HTMLImageElement))" class="rc-image-tile-33"
 													src="https://i.latedream.us.kg/static/xs_avatar_4k_.jpg"
 													alt="" style="">
 												<div class="rc-image-tile-overlay"></div>
@@ -92,7 +102,7 @@ defineExpose({
 									<td role="button" tabindex="8" class="rc-imageselect-tile" aria-label="图片验证">
 										<div class="rc-image-tile-target">
 											<div class="rc-image-tile-wrapper" style="width: 126px; height: 126px">
-												<img class="rc-image-tile-33"
+												<img @click="setImg(($event.target as HTMLImageElement))" class="rc-image-tile-33"
 													src="https://i.latedream.us.kg/static/xs_avatar_4k_.jpg"
 													alt="" style="">
 												<div class="rc-image-tile-overlay"></div>
@@ -103,7 +113,7 @@ defineExpose({
 									<td role="button" tabindex="9" class="rc-imageselect-tile" aria-label="图片验证">
 										<div class="rc-image-tile-target">
 											<div class="rc-image-tile-wrapper" style="width: 126px; height: 126px">
-												<img class="rc-image-tile-33"
+												<img @click="setImg(($event.target as HTMLImageElement))" class="rc-image-tile-33"
 													src="https://i.latedream.us.kg/static/xs_avatar_4k_.jpg"
 													alt="" style="">
 												<div class="rc-image-tile-overlay"></div>
@@ -116,7 +126,7 @@ defineExpose({
 									<td role="button" tabindex="10" class="rc-imageselect-tile" aria-label="图片验证">
 										<div class="rc-image-tile-target">
 											<div class="rc-image-tile-wrapper" style="width: 126px; height: 126px">
-												<img class="rc-image-tile-33"
+												<img @click="setImg(($event.target as HTMLImageElement))" class="rc-image-tile-33"
 													src="https://i.latedream.us.kg/static/xs_avatar_4k_.jpg"
 													alt="" style="">
 												<div class="rc-image-tile-overlay"></div>
@@ -127,7 +137,7 @@ defineExpose({
 									<td role="button" tabindex="11" class="rc-imageselect-tile" aria-label="图片验证">
 										<div class="rc-image-tile-target">
 											<div class="rc-image-tile-wrapper" style="width: 126px; height: 126px">
-												<img class="rc-image-tile-33"
+												<img @click="setImg(($event.target as HTMLImageElement))" class="rc-image-tile-33"
 													src="https://i.latedream.us.kg/static/xs_avatar_4k_.jpg"
 													alt="" style="">
 												<div class="rc-image-tile-overlay"></div>
@@ -138,7 +148,7 @@ defineExpose({
 									<td role="button" tabindex="12" class="rc-imageselect-tile" aria-label="图片验证">
 										<div class="rc-image-tile-target">
 											<div class="rc-image-tile-wrapper" style="width: 126px; height: 126px">
-												<img class="rc-image-tile-33"
+												<img @click="setImg(($event.target as HTMLImageElement))" class="rc-image-tile-33"
 													src="https://i.latedream.us.kg/static/xs_avatar_4k_.jpg"
 													alt="" style="">
 												<div class="rc-image-tile-overlay"></div>
@@ -156,7 +166,7 @@ defineExpose({
 				<div class="rc-separator"></div>
 				<div class="rc-controls">
 					<div class="primary-controls">
-						<div class="rc-buttons" style="display: none;">
+						<div v-if="showCtrls" class="rc-buttons">
 							<div class="button-holder reload-button-holder"><button
 									class="rc-button goog-inline-block rc-button-reload" title="换一个新的验证码" value=""
 									id="recaptcha-reload-button" tabindex="3"></button></div>
@@ -183,6 +193,12 @@ defineExpose({
 
 <style scoped>
 @import url('../../styles__ltr.css');
+* {
+	/** prevent picocss override */
+	--pico-font-family: initial;
+	line-height: initial;
+	box-sizing: initial;
+}
 .low-pixel-mode .rc-image-tile-33 {
 	width: 100%;
 	height: 100%;

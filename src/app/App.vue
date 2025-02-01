@@ -1,116 +1,43 @@
 <script setup lang="ts">
 import {ref} from 'vue';
 import Preview from './views/Preview.vue';
-import actions from './libs/actions';
-
+import Actions from './views/Actions.vue';
+import Footer from './views/Footer.vue';
+const version = __VUE_APP_VERSION__;
 const previewRef = ref<InstanceType<typeof Preview>>();
+const setTargetText = (text: string) => {
+	previewRef.value!.targetText = text;
+}
+const switchLowPixelMode = (value: boolean) => {
+	previewRef.value?.lowPixelMode(value);
+}
+const switchTip = (value: boolean) => {
+	previewRef.value!.showTip = value;
+}
+const switchCtrls = (value: boolean) => {
+	previewRef.value!.showCtrls = value;
+}
 </script>
 
 <template>
-	<div class="title">reCAPTCHA梗图生成器</div>
+	<a href="https://github.com/LateDreamXD/recaptcha-gen" class="github-corner" aria-label="View source on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#1a73e8; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"/><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"/><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"/></svg></a>
 
-	<Preview ref="previewRef" />
+	<h1>reCAPTCHA梗图生成器<sup style="margin-left: 0.5rem;" :textContent="`v${version}`"></sup></h1>
 
-	<div class="actions">
-		<div class="act-group" data-title="一般选项">
-			<span class="act-item">
-				<label for="text">要找出的目标名字:</label>
-				<input @input="(e: Event) => previewRef!.targetText = (e.target as HTMLInputElement).value" type="text" id="text" value="晚梦" />
-			</span>
-			<span class="act-item">
-				<label for="images">提供的图片(需要9张):</label>
-				<input @change="(e: Event) => actions.changeImgs((e.target as HTMLInputElement).files!, previewRef!.imgEles!)" type="file" id="images" accept="image/*" multiple />
-			</span>
-			<span class="act-item">
-				<input checked @click="(e: Event) => previewRef!.lowPixelMode((e.target as HTMLInputElement).checked)" type="checkbox" role="switch" id="low-pixel-imgs-support" />
-				<label for="low-pixel-imgs-support">低像素图片支持</label>
-			</span>
-		</div>
-		<!-- <div class="act-group" data-folded data-title="高级选项">
-			<span class="act-item">
-			</span>
-		</div> -->
-		<div class="btn-panel">
-			<button @click.prevent="previewRef!.CopyImg()" type="button" id="copy">复制图片到剪贴板</button>
-			<button @click.prevent="previewRef!.SaveImg()" type="button" id="save">保存图片到本地</button>
-		</div>
-	</div>
+	<div id="view"><Preview ref="previewRef" /></div>
 
-	<div class="footer" style="margin-top: 1rem;">
-		<span class="ft-item">©2025 晚梦. 以 <a style="color: deeppink;" href="http://mozilla.org/MPL/2.0/">MPL2.0</a> 许可开源.</span>
-		<span class="ft-item"><a style="color: deeppink;" href="https://github.com/LateDreamXD/recaptcha-gen">View on GitHub</a></span>
-	</div>
+	<Actions :setTargetText="setTargetText"
+			 :lowPixelMode="switchLowPixelMode"
+			 :mainNode="previewRef?.mainNode!"
+			 :switchTip="switchTip"
+			 :switchCtrls="switchCtrls" />
+
+	<Footer />
 </template>
 
-<style lang="scss" scoped>
-* {
-	--font-size: 1.4rem;
-	--min-width: 400px;
+<style scoped>
+#view {
+	outline: 2px solid var(--pico-primary-border);
 }
-
-.actions {
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	margin-top: 2rem;
-	font-size: var(--font-size);
-	& > .act-group {
-		min-width: var(--min-width);
-		margin-bottom: 1.6rem;
-		& > .act-item {
-			margin: 0.2rem;
-			display: block;
-		}
-	}
-	& input:not([type="checkbox"]) {
-		padding: 0.4rem;
-		width: 100%;
-		border: 2px solid var(--border-color);
-		border-radius: 0.4rem;
-		display: block;
-		font-size: var(--font-size);
-		color: var(--color);
-		background-color: var(--bg-color);
-		transition: border-color 0.6s ease;
-		&:hover {
-			border-color: var(--color);
-		}
-	}
-	& input[type="checkbox"] {
-		height: 1.2rem;
-		width: 2rem;
-	}
-	& button {
-		cursor: pointer;
-		padding: 0.4rem;
-		font-size: var(--font-size);
-		border: 2px solid var(--color);
-		border-radius: 0.4rem;
-		color: var(--color);
-		background-color: var(--border-color);
-		transition: border-color 0.6s ease;
-		&:hover {
-			border-color: transparent;
-		}
-	}
-}
-
-.btn-panel {
-	min-width: var(--min-width);
-	display: flex;
-	justify-content: space-between;
-}
-
-.title {
-	font-size: 2rem;
-	font-weight: bold;
-	margin-bottom: 1rem;
-	text-align: center;
-}
-
-.ft-item {
-	display: block;
-	font-size: 1.2rem;
-	text-align: center;
-}
+.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}
 </style>
