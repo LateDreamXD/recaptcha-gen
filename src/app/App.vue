@@ -24,14 +24,14 @@ const switchCtrls = (value: boolean) => {
 
 	<div id="main">
 
-		<div id="header">
+		<div id="app-header">
 			<h1>reCAPTCHA梗图生成器<sup style="margin-left: 0.5rem;">{{ version }}</sup></h1>
 
 			<div id="view" style="width: 400px;"><Preview ref="previewRef" /></div>
 		</div>
 
 
-		<div id="footer">
+		<div id="app-footer">
 			<Actions :setTargetText="setTargetText"
 					 :lowZoomMode="switchLowZoomMode"
 					:mainNode="previewRef?.mainNode!"
@@ -47,11 +47,11 @@ const switchCtrls = (value: boolean) => {
 #view {
 	outline: 2px solid var(--pico-primary-border);
 }
-#main, #header, #footer {
+#main, #app-header, #app-footer {
 	display: flex;
 	align-items: center;
 }
-#header, #footer {
+#app-header, #app-footer {
 	flex-direction: column;
 }
 .github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}
