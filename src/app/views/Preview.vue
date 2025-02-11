@@ -3,12 +3,11 @@ import {useTemplateRef, ref, defineExpose} from 'vue';
 import {file2base64} from './apis';
 
 const mainRef = useTemplateRef<HTMLDivElement>('main');
-const targetText = ref<string>('晚梦');
 const showTip = ref<boolean>(true);
-const showCtrls = ref<boolean>(false);
+const showCtrls = ref<boolean>(true);
 
-const lowPixelMode = (value: boolean) => {
-	mainRef.value!.classList.toggle('low-pixel-mode', value);
+const lowZoomMode = (value: boolean) => {
+	mainRef.value!.classList.toggle('low-zoom-mode', value);
 }
 
 const setImg = (target: HTMLImageElement) => {
@@ -25,25 +24,27 @@ const setImg = (target: HTMLImageElement) => {
 }
 
 defineExpose({
-	targetText,
 	mainNode: mainRef,
-	lowPixelMode,
+	lowZoomMode,
 	showTip,
 	showCtrls
 });
 </script>
 
 <template>
-	<div class="low-pixel-mode" ref="main" id="main" style="">
+	<div class="low-zoom-mode" ref="main" style="">
 		<div id="rc-imageselect" aria-modal="true" role="dialog">
 			<div class="rc-imageselect-response-field"></div><span class="rc-imageselect-tabloop-begin"
 				tabindex="0"></span>
 			<div class="rc-imageselect-payload">
 				<div class="rc-imageselect-instructions">
 					<div class="rc-imageselect-desc-wrapper">
-						<div class="rc-imageselect-desc-no-canonical" style="width: 352px; font-size: 12px;">
-							请选择包含<strong :textContent="targetText" style="font-size: 28px;"></strong>的所有图片。<span
-							v-if="showTip" style="font-size: 14px;">在没有新图片可以点按后，请点击“验证”。</span></div>
+						<div class="rc-imageselect-desc-no-canonical" style="width: 352px; font-size: 12px; margin-top: -8px;">
+							<span contenteditable>请选择包含</span>
+							<span contenteditable style="font-size: 28px; font-weight: bold;">晚梦</span>
+							<span contenteditable>的所有图片。</span>
+							<span contenteditable v-if="showTip" style="font-size: 14px;">在没有新图片可以点按后，请点击“验证”。</span>
+						</div>
 					</div>
 					<div class="rc-imageselect-progress"></div>
 				</div>
@@ -182,7 +183,7 @@ defineExpose({
 									id="recaptcha-undo-button" tabindex="0" style="display: none;"></button></div>
 						</div>
 						<div class="verify-button-holder"><button class="rc-button-default goog-inline-block"
-								title="" value="" id="recaptcha-verify-button" tabindex="0">验证</button></div>
+								title="" value="" id="recaptcha-verify-button" tabindex="0"><span contenteditable>验证</span></button></div>
 					</div>
 					<div class="rc-challenge-help" style="display:none" tabindex="0"></div>
 				</div>
@@ -199,7 +200,7 @@ defineExpose({
 	line-height: initial;
 	box-sizing: initial;
 }
-.low-pixel-mode .rc-image-tile-33 {
+.low-zoom-mode .rc-image-tile-33 {
 	width: 100%;
 	height: 100%;
 }
