@@ -20,13 +20,67 @@
 	)
 );
 
+:root {
+	scroll-behavior: smooth;
+}
+
+body {
+	margin: 0; padding: 0;
+}
+
 #app {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
 }
 
-#main {
+#view {
 	width: 400px;
 	height: 580px;
+}
+
+details {
+	padding: 0.6em; border-radius: 0.4em;
+	color: var(--pico-secondary-inverse);
+	background-color: var(--pico-secondary-background);
+	&:hover {
+		transition: background-color 0.2s ease-in-out;
+		background-color: var(--pico-secondary-hover-background);
+	}
+	&>summary {
+		// color: var(--pico-h4-color);
+		font-size: 80% !important;
+		font-weight: bold;
+		cursor: pointer;
+		-moz-user-select: none;
+		-webkit-user-select: none;
+		user-select: none;
+		display: inline-flex !important;
+		align-items: center;
+		transition: all 0.2s ease;
+		&>.__details-angle {
+			display: inline-block;
+			margin-left: 0.4em;
+			width: 1em;
+			height: 1em;
+			transform: rotate(90deg);
+			transition: transform 0.2s ease;
+		}
+	}
+	&[open]>summary {
+		align-items: flex-end;
+		&>.__details-angle {
+			transform: rotate(180deg);
+		}
+	}
+}
+
+@import './devices.scss';
+
+@media screen and (max-width: 768px) {
+	@include mobile;
+}
+
+@media screen and (min-width: 768px) {
+	// @include desktop;
 }

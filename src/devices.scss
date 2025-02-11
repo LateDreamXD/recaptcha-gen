@@ -1,0 +1,35 @@
+@mixin desktop {
+	/* #app {
+		width: 50%;
+	} */
+}
+
+@mixin mobile {
+	:root {
+		overflow-x: hidden;
+	}
+	body {
+		width: 100%;
+		overflow-y: hidden;
+	}
+	#app {
+		height: 100%;
+	}
+	#view {
+		// 相当于 zoom: 0.8;
+		transform: scale(0.8);
+		transform-origin: center top;
+	}
+	#footer {
+		margin-top: -30%;
+		font-size: 120%;
+		transform: scale(0.8);
+		transform-origin: center top;
+	}
+	#main {
+		flex-direction: column;
+	}
+	.debug-info {
+		font-size: 115%;
+	}
+}
