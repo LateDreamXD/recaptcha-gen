@@ -1,13 +1,12 @@
 {
   "name": "recaptcha-gen",
-  "version": "3.0",
+  "version": "3.1",
   "type": "module",
   "private": true,
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview",
-    "clean": "rm -rf dist"
+    "preview": "vite preview"
   },
   "dependencies": {
     "@picocss/pico": "^2.0.6",
@@ -24,7 +23,7 @@
   },
   "author": {
     "name": "LateDream",
-    "email": "latedream_@outlook.com",
+    "email": "latedreamawa@outlook.com",
     "url": "https://github.com/LateDreamXD"
   },
   "packageManager": "yarn@4.6.0"
