@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import {ref} from 'vue';
-import Preview from './views/Preview.vue';
-import Actions from './views/Actions.vue';
-import Footer from './views/Footer.vue';
+import {ref, defineAsyncComponent} from 'vue';
+const Preview = defineAsyncComponent(() => import('./views/Preview.vue'));
+const Actions = defineAsyncComponent(() => import('./views/Actions.vue'));
+const Footer = defineAsyncComponent(() => import('./views/Footer.vue'));
 const version = __VUE_APP_VERSION__;
 const previewRef = ref<InstanceType<typeof Preview>>();
 const setTargetText = (text: string) => {
