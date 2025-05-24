@@ -58,7 +58,7 @@ defineExpose({
 										<div class="rc-image-tile-target">
 											<div class="rc-image-tile-wrapper" style="width: 126px; height: 126px">
 												<img @click="setImg(($event.target as HTMLImageElement))" class="rc-image-tile-33"
-													src="https://i.latedream.us.kg/static/xs_avatar_4k_.jpg"
+													src="https://about.latedream.cn/assets/statics/avatar.webp"
 													alt="" style="top:0%;">
 												<div class="rc-image-tile-overlay"></div>
 											</div>
@@ -69,7 +69,7 @@ defineExpose({
 										<div class="rc-image-tile-target">
 											<div class="rc-image-tile-wrapper" style="width: 126px; height: 126px">
 												<img @click="setImg(($event.target as HTMLImageElement))" class="rc-image-tile-33"
-													src="https://i.latedream.us.kg/static/xs_avatar_4k_.jpg"
+													src="https://about.latedream.cn/assets/statics/avatar.webp"
 													alt="" style="top:0%;">
 												<div class="rc-image-tile-overlay"></div>
 											</div>
@@ -80,7 +80,7 @@ defineExpose({
 										<div class="rc-image-tile-target">
 											<div class="rc-image-tile-wrapper" style="width: 126px; height: 126px">
 												<img @click="setImg(($event.target as HTMLImageElement))" class="rc-image-tile-33"
-													src="https://i.latedream.us.kg/static/xs_avatar_4k_.jpg"
+													src="https://about.latedream.cn/assets/statics/avatar.webp"
 													alt="" style="top:0%;">
 												<div class="rc-image-tile-overlay"></div>
 											</div>
@@ -93,7 +93,7 @@ defineExpose({
 										<div class="rc-image-tile-target">
 											<div class="rc-image-tile-wrapper" style="width: 126px; height: 126px">
 												<img @click="setImg(($event.target as HTMLImageElement))" class="rc-image-tile-33"
-													src="https://i.latedream.us.kg/static/xs_avatar_4k_.jpg"
+													src="https://about.latedream.cn/assets/statics/avatar.webp"
 													alt="" style="">
 												<div class="rc-image-tile-overlay"></div>
 											</div>
@@ -104,7 +104,7 @@ defineExpose({
 										<div class="rc-image-tile-target">
 											<div class="rc-image-tile-wrapper" style="width: 126px; height: 126px">
 												<img @click="setImg(($event.target as HTMLImageElement))" class="rc-image-tile-33"
-													src="https://i.latedream.us.kg/static/xs_avatar_4k_.jpg"
+													src="https://about.latedream.cn/assets/statics/avatar.webp"
 													alt="" style="">
 												<div class="rc-image-tile-overlay"></div>
 											</div>
@@ -115,7 +115,7 @@ defineExpose({
 										<div class="rc-image-tile-target">
 											<div class="rc-image-tile-wrapper" style="width: 126px; height: 126px">
 												<img @click="setImg(($event.target as HTMLImageElement))" class="rc-image-tile-33"
-													src="https://i.latedream.us.kg/static/xs_avatar_4k_.jpg"
+													src="https://about.latedream.cn/assets/statics/avatar.webp"
 													alt="" style="">
 												<div class="rc-image-tile-overlay"></div>
 											</div>
@@ -128,7 +128,7 @@ defineExpose({
 										<div class="rc-image-tile-target">
 											<div class="rc-image-tile-wrapper" style="width: 126px; height: 126px">
 												<img @click="setImg(($event.target as HTMLImageElement))" class="rc-image-tile-33"
-													src="https://i.latedream.us.kg/static/xs_avatar_4k_.jpg"
+													src="https://about.latedream.cn/assets/statics/avatar.webp"
 													alt="" style="">
 												<div class="rc-image-tile-overlay"></div>
 											</div>
@@ -139,7 +139,7 @@ defineExpose({
 										<div class="rc-image-tile-target">
 											<div class="rc-image-tile-wrapper" style="width: 126px; height: 126px">
 												<img @click="setImg(($event.target as HTMLImageElement))" class="rc-image-tile-33"
-													src="https://i.latedream.us.kg/static/xs_avatar_4k_.jpg"
+													src="https://about.latedream.cn/assets/statics/avatar.webp"
 													alt="" style="">
 												<div class="rc-image-tile-overlay"></div>
 											</div>
@@ -150,7 +150,7 @@ defineExpose({
 										<div class="rc-image-tile-target">
 											<div class="rc-image-tile-wrapper" style="width: 126px; height: 126px">
 												<img @click="setImg(($event.target as HTMLImageElement))" class="rc-image-tile-33"
-													src="https://i.latedream.us.kg/static/xs_avatar_4k_.jpg"
+													src="https://about.latedream.cn/assets/statics/avatar.webp"
 													alt="" style="">
 												<div class="rc-image-tile-overlay"></div>
 											</div>
