@@ -15,7 +15,17 @@ export default defineConfig({
 		__NODE_VER__: JSON.stringify(process.version),
 		__V8_VER__: JSON.stringify(process.versions.v8),
 	},
-	server: {
-		host: '0.0.0.0',
+	build: {
+		modulePreload: {
+			polyfill: true
+		},
+		rollupOptions: {
+			output: {
+				manualChunks: {
+					'vue': ['vue'],
+					'dom-to-image': ['dom-to-image']
+				}
+			}
+		}
 	}
 });
