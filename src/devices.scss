@@ -5,31 +5,41 @@
 }
 
 @mixin mobile {
-	:root {
-		overflow-x: hidden;
-	}
 	body {
-		width: 100%;
-		overflow-y: hidden;
+		width: 100vw;
+		overflow-y: auto;
 	}
 	#app {
 		height: 100%;
+		overflow-x: hidden;
 	}
-	#view {
+	#view, #app-footer {
 		// 相当于 zoom: 0.8;
+		// 但是我不清楚为什么效果比 zoom 更好, 就这样吧
 		transform: scale(0.8);
 		transform-origin: center top;
+	}
+	#app-title {
+		font-size: 1.45rem;
 	}
 	#app-footer {
+		transform: scale(0.85);
 		margin-top: -30%;
 		font-size: 120%;
-		transform: scale(0.8);
-		transform-origin: center top;
 	}
 	#main {
 		flex-direction: column;
 	}
 	.debug-info {
 		font-size: 115%;
+	}
+
+	[data-tooltip]::before {
+		min-width: 24em;
+		max-width: 100vw;
+		margin-left: 1.2rem;
+		overflow: visible !important;
+		text-overflow: unset !important;
+		white-space: unset !important;
 	}
 }

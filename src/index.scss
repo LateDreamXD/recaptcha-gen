@@ -34,10 +34,10 @@ body {
 	align-items: center;
 }
 
-#view {
-	width: 400px;
-	height: 580px;
-}
+// #view {
+// 	width: 400px;
+// 	height: 580px;
+// }
 
 details {
 	padding: 0.6em; border-radius: 0.4em;
@@ -83,4 +83,21 @@ details {
 
 @media screen and (min-width: 768px) {
 	// @include desktop;
+}
+
+// XiaozhiSans 的祖传 rgb 光污染动画(被打
+@keyframes rgb-color {
+	0%	{color: red;}
+	8.3%	{color: orange;}
+	16.6% {color: yellow;}
+	24.9% {color: green;}
+	33.2% {color: blue;}
+	41.5% {color: indigo;}
+	49.8% {color: violet;}
+	58.1% {color: indigo;}
+	66.4% {color: blue;}
+	74.7% {color: green;}
+	83% {color: yellow;}
+	91.3% {color: orange;}
+	100% {color: red;}
 }
