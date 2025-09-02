@@ -3,7 +3,7 @@ import {useTemplateRef, ref, defineExpose} from 'vue';
 import {file2base64} from './apis';
 
 const picNum = ref<number>(9);
-const picIndex = ref<number>(4);
+// const picIndex = ref<number>(4);
 const mainRef = useTemplateRef<HTMLDivElement>('main');
 const showTip = ref<boolean>(true);
 const showCtrls = ref<boolean>(true);
@@ -60,7 +60,7 @@ defineExpose({
 						<table class="rc-imageselect-table-33">
 							<tbody>
 								<tr v-for="index in Math.floor(Math.sqrt(picNum))" :key="index">
-									<td v-for="index in Math.floor(Math.sqrt(picNum))" :key="index" role="button" :tabindex="picIndex++" class="rc-imageselect-tile" aria-label="图片验证">
+									<td v-for="index in Math.floor(Math.sqrt(picNum))" :key="index" role="button" class="rc-imageselect-tile" aria-label="图片验证">
 										<div class="rc-image-tile-target">
 											<div class="rc-image-tile-wrapper" style="width: 126px; height: 126px">
 												<img @click="setImg(($event.target as HTMLImageElement))" class="rc-image-tile-33"
