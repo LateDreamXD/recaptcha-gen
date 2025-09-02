@@ -2,6 +2,8 @@
 import {useTemplateRef, ref, defineExpose} from 'vue';
 import {file2base64} from './apis';
 
+const picNum = ref<number>(9);
+const picIndex = ref<number>(4);
 const mainRef = useTemplateRef<HTMLDivElement>('main');
 const showTip = ref<boolean>(true);
 const showCtrls = ref<boolean>(true);
@@ -23,11 +25,15 @@ const setImg = (target: HTMLImageElement) => {
 	});
 }
 
+const setPicNum = (num: number) => (picIndex.value = 4) && (picNum.value = num);
+
+
 defineExpose({
 	mainNode: mainRef,
 	lowZoomMode,
 	showTip,
-	showCtrls
+	showCtrls,
+	setPicNum
 });
 </script>
 
@@ -53,105 +59,13 @@ defineExpose({
 						aria-hidden="true">
 						<table class="rc-imageselect-table-33">
 							<tbody>
-								<tr>
-									<td role="button" tabindex="4" class="rc-imageselect-tile" aria-label="图片验证">
+								<tr v-for="index in Math.floor(Math.sqrt(picNum))" :key="index">
+									<td v-for="index in Math.floor(Math.sqrt(picNum))" :key="index" role="button" :tabindex="picIndex++" class="rc-imageselect-tile" aria-label="图片验证">
 										<div class="rc-image-tile-target">
 											<div class="rc-image-tile-wrapper" style="width: 126px; height: 126px">
 												<img @click="setImg(($event.target as HTMLImageElement))" class="rc-image-tile-33"
 													src="https://about.latedream.cn/assets/statics/avatar.webp"
 													alt="" style="top:0%;">
-												<div class="rc-image-tile-overlay"></div>
-											</div>
-											<div class="rc-imageselect-checkbox"></div>
-										</div>
-									</td>
-									<td role="button" tabindex="5" class="rc-imageselect-tile" aria-label="图片验证">
-										<div class="rc-image-tile-target">
-											<div class="rc-image-tile-wrapper" style="width: 126px; height: 126px">
-												<img @click="setImg(($event.target as HTMLImageElement))" class="rc-image-tile-33"
-													src="https://about.latedream.cn/assets/statics/avatar.webp"
-													alt="" style="top:0%;">
-												<div class="rc-image-tile-overlay"></div>
-											</div>
-											<div class="rc-imageselect-checkbox"></div>
-										</div>
-									</td>
-									<td role="button" tabindex="6" class="rc-imageselect-tile" aria-label="图片验证">
-										<div class="rc-image-tile-target">
-											<div class="rc-image-tile-wrapper" style="width: 126px; height: 126px">
-												<img @click="setImg(($event.target as HTMLImageElement))" class="rc-image-tile-33"
-													src="https://about.latedream.cn/assets/statics/avatar.webp"
-													alt="" style="top:0%;">
-												<div class="rc-image-tile-overlay"></div>
-											</div>
-											<div class="rc-imageselect-checkbox"></div>
-										</div>
-									</td>
-								</tr>
-								<tr>
-									<td role="button" tabindex="7" class="rc-imageselect-tile" aria-label="图片验证">
-										<div class="rc-image-tile-target">
-											<div class="rc-image-tile-wrapper" style="width: 126px; height: 126px">
-												<img @click="setImg(($event.target as HTMLImageElement))" class="rc-image-tile-33"
-													src="https://about.latedream.cn/assets/statics/avatar.webp"
-													alt="" style="">
-												<div class="rc-image-tile-overlay"></div>
-											</div>
-											<div class="rc-imageselect-checkbox"></div>
-										</div>
-									</td>
-									<td role="button" tabindex="8" class="rc-imageselect-tile" aria-label="图片验证">
-										<div class="rc-image-tile-target">
-											<div class="rc-image-tile-wrapper" style="width: 126px; height: 126px">
-												<img @click="setImg(($event.target as HTMLImageElement))" class="rc-image-tile-33"
-													src="https://about.latedream.cn/assets/statics/avatar.webp"
-													alt="" style="">
-												<div class="rc-image-tile-overlay"></div>
-											</div>
-											<div class="rc-imageselect-checkbox"></div>
-										</div>
-									</td>
-									<td role="button" tabindex="9" class="rc-imageselect-tile" aria-label="图片验证">
-										<div class="rc-image-tile-target">
-											<div class="rc-image-tile-wrapper" style="width: 126px; height: 126px">
-												<img @click="setImg(($event.target as HTMLImageElement))" class="rc-image-tile-33"
-													src="https://about.latedream.cn/assets/statics/avatar.webp"
-													alt="" style="">
-												<div class="rc-image-tile-overlay"></div>
-											</div>
-											<div class="rc-imageselect-checkbox"></div>
-										</div>
-									</td>
-								</tr>
-								<tr>
-									<td role="button" tabindex="10" class="rc-imageselect-tile" aria-label="图片验证">
-										<div class="rc-image-tile-target">
-											<div class="rc-image-tile-wrapper" style="width: 126px; height: 126px">
-												<img @click="setImg(($event.target as HTMLImageElement))" class="rc-image-tile-33"
-													src="https://about.latedream.cn/assets/statics/avatar.webp"
-													alt="" style="">
-												<div class="rc-image-tile-overlay"></div>
-											</div>
-											<div class="rc-imageselect-checkbox"></div>
-										</div>
-									</td>
-									<td role="button" tabindex="11" class="rc-imageselect-tile" aria-label="图片验证">
-										<div class="rc-image-tile-target">
-											<div class="rc-image-tile-wrapper" style="width: 126px; height: 126px">
-												<img @click="setImg(($event.target as HTMLImageElement))" class="rc-image-tile-33"
-													src="https://about.latedream.cn/assets/statics/avatar.webp"
-													alt="" style="">
-												<div class="rc-image-tile-overlay"></div>
-											</div>
-											<div class="rc-imageselect-checkbox"></div>
-										</div>
-									</td>
-									<td role="button" tabindex="12" class="rc-imageselect-tile" aria-label="图片验证">
-										<div class="rc-image-tile-target">
-											<div class="rc-image-tile-wrapper" style="width: 126px; height: 126px">
-												<img @click="setImg(($event.target as HTMLImageElement))" class="rc-image-tile-33"
-													src="https://about.latedream.cn/assets/statics/avatar.webp"
-													alt="" style="">
 												<div class="rc-image-tile-overlay"></div>
 											</div>
 											<div class="rc-imageselect-checkbox"></div>

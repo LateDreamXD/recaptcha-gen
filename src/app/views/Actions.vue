@@ -1,8 +1,20 @@
 <script setup lang="ts">
+import { defineProps } from 'vue';
 import actions from './apis';
+
+defineProps({
+	mainNode: HTMLDivElement,
+	setPicNum: Function,
+	setTargetText: Function,
+	lowZoomMode: Function,
+	switchCtrls: Function,
+	switchTip: Function,
+});
+
 // @ts-ignore
 const isMobile = ("userAgentData" in navigator)? navigator.userAgentData.mobile:
 	matchMedia('(max-width: 768px)').matches;
+
 </script>
 
 <template>
@@ -20,6 +32,11 @@ const isMobile = ("userAgentData" in navigator)? navigator.userAgentData.mobile:
 			<span v-if="false" class="act-item">
 				<label for="text">要找出的目标名字:</label>
 				<input @input="setTargetText!(($event.target as HTMLInputElement).value)" type="text" id="text" value="晚梦" />
+			</span>
+			<span class="act-item">
+				<label for="pic-num" data-tooltip="会被开平方根, 所以可能出现实际数量少于设定值的情况">图片数量</label>
+				<input @input="// @ts-ignore
+				setPicNum!(($event.target.value || 9))" type="number" id="pic-num" ref="pic-num" value="9" placeholder="9" />
 			</span>
 			<span class="act-item">
 				<input checked @click="lowZoomMode!(($event.target as HTMLInputElement).checked)" type="checkbox" role="switch" id="low-pixel-imgs-support" />
@@ -44,18 +61,6 @@ const isMobile = ("userAgentData" in navigator)? navigator.userAgentData.mobile:
 		</div>
 	</div>
 </template>
-
-<script lang="ts">
-export default {
-	props: {
-		setTargetText: Function,
-		lowZoomMode: Function,
-		mainNode: HTMLDivElement,
-		switchTip: Function,
-		switchCtrls: Function
-	}
-}
-</script>
 
 <style lang="scss" scoped>
 * {
@@ -83,7 +88,17 @@ export default {
 }
 .act-item {
 	margin: 0.2rem;
-	display: block;
+	display: flex;
+	justify-content: center;
+	>input[type="number"] {
+		height: 1.4rem;
+		width: 4rem;
+		padding: 0;
+		padding-left: 0.2rem;
+		// font-size: 0.8rem;
+		margin-left: 0.6rem;
+		margin-bottom: 0;
+	}
 	&>input[role="switch"] {
 		margin-right: 0.6rem;
 	}
