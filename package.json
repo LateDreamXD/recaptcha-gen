@@ -2,6 +2,7 @@
   "name": "recaptcha-gen",
   "version": "4.0-dev",
   "type": "module",
+  "license": "MIT",
   "private": true,
   "scripts": {
     "dev": "vite",
