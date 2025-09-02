@@ -1,6 +1,6 @@
 {
   "name": "recaptcha-gen",
-  "version": "4.0-dev",
+  "version": "4.0-pre1",
   "type": "module",
   "license": "MIT",
   "private": true,
@@ -25,6 +25,8 @@
   "author": "晚梦 <xiaozhisans@qq.com> (https://about.latedream.cn)",
   "packageManager": "pnpm@10.14.0",
   "pnpm": {
-    "onlyBuiltDependencies": ["esbuild"]
+    "onlyBuiltDependencies": [
+      "esbuild"
+    ]
   }
 }
