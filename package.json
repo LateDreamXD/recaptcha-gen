@@ -1,6 +1,6 @@
 {
   "name": "recaptcha-gen",
-  "version": "3.1",
+  "version": "4.0-dev",
   "type": "module",
   "private": true,
   "scripts": {
@@ -9,22 +9,21 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@picocss/pico": "^2.0.6",
+    "@picocss/pico": "^2.1.1",
     "dom-to-image": "^2.6.0",
-    "vue": "^3.5.13"
+    "vue": "^3.5.20"
   },
   "devDependencies": {
-    "@types/dom-to-image": "^2",
-    "@types/node": "^22.13.0",
-    "@vitejs/plugin-vue": "^5.2.1",
-    "sass-embedded": "^1.83.4",
-    "typescript": "^5.7.3",
-    "vite": "^6.0.11"
+    "@types/dom-to-image": "^2.6.7",
+    "@types/node": "^24.3.0",
+    "@vitejs/plugin-vue": "^6.0.1",
+    "sass-embedded": "^1.91.0",
+    "typescript": "^5.9.2",
+    "vite": "^7.1.4"
   },
-  "author": {
-    "name": "LateDream",
-    "email": "latedreamawa@outlook.com",
-    "url": "https://github.com/LateDreamXD"
-  },
-  "packageManager": "yarn@4.6.0"
+  "author": "晚梦 <xiaozhisans@qq.com> (https://about.latedream.cn)",
+  "packageManager": "pnpm@10.14.0",
+  "pnpm": {
+    "onlyBuiltDependencies": ["esbuild"]
+  }
 }
