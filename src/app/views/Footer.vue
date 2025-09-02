@@ -1,19 +1,37 @@
 <script setup lang="ts">
-import {ref, version as vueVersion} from 'vue';
+import {ref, useTemplateRef, version as vueVersion} from 'vue';
 const debugMode = ref<boolean>(import.meta.env.DEV);
-window.debugMode = Object.freeze({
-	on:() => debugMode.value = true,
-	off:() => debugMode.value = false,
-	query:() => debugMode.value
-})
+const debug_ = {
+	on: () => debugMode.value = true,
+	off: () => debugMode.value = false,
+	query: () => debugMode.value
+}
+declare global {
+	interface Window {
+		debug_: typeof debug_;
+	}
+}
+debugMode.value && (window.debug_ = Object.freeze(debug_));
 // debug info
 const debugInfo = {
 	name: __APP_NAME__,
 	version: __APP_VERSION__,
 	env: import.meta.env.MODE,
 	host: location.hostname,
-	device: navigator?.userAgentData?.platform || navigator.platform,
+	// @ts-ignore
+	device: ("userAgentData" in navigator)? navigator.userAgentData.platform: navigator.platform,
 	vue: vueVersion
+}
+
+const heart = useTemplateRef('heart');
+const heartbeat = ref<number>(0);
+function heartbeatEvent() {
+	heartbeat.value++;
+	console.log('heartbeat:', heartbeat.value);
+	heart?.value?.classList.toggle('heartbeat');
+	setTimeout(() => heart?.value?.classList.toggle('heartbeat'), 200);
+	(heartbeat.value === 5) && debug_.on();
+	setTimeout(() => heartbeat.value = 0, 5000);
 }
 </script>
 
@@ -21,7 +39,7 @@ const debugInfo = {
 	<div class="pico" id="footer">
 	<div id="footer-main">
 		<span class="ft-item">所有操作均在客户端执行, 请放心使用</span>
-		<span class="ft-item">Made with ❤️ by <a href="https://about.latedream.cn/" target="_blank" rel="noopener">LateDream</a></span>
+		<span class="ft-item">Made with <i id="heart" ref="heart" @click.prevent="heartbeatEvent">❤️</i> by <a href="https://about.latedream.cn/" target="_blank" rel="noopener">LateDream</a></span>
 	</div>
 
 	<details v-if="debugMode" class="debug-info">
@@ -47,6 +65,13 @@ const debugInfo = {
 }
 #footer {
 	margin-top: 1.4rem;
+}
+#heart {
+	font-style: normal;
+	transition: font-size 0.2s ease-in-out;
+	&.heartbeat {
+		font-size: 1.4em;
+	}
 }
 .ft-item {
 	display: block;
