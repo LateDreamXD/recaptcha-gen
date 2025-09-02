@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import actions from './apis';
-const isMobile = matchMedia('(max-width: 768px)').matches;
+// @ts-ignore
+const isMobile = ("userAgentData" in navigator)? navigator.userAgentData.mobile:
+	matchMedia('(max-width: 768px)').matches;
 </script>
 
 <template>
@@ -37,7 +39,7 @@ const isMobile = matchMedia('(max-width: 768px)').matches;
 			</span>
 		</div>
 		<div class="btn-panel">
-			<button @click.prevent="actions.copyImg(mainNode!)" class="secondary" type="button" id="copy">复制图片到剪贴板</button>
+			<button @click.prevent="actions.copyImg(mainNode!, isMobile)" class="secondary" type="button" id="copy">复制图片到剪贴板</button>
 			<button @click.prevent="actions.saveImg(mainNode!)" class="primary" type="button" id="save">保存图片到本地</button>
 		</div>
 	</div>
