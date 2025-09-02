@@ -1,17 +1,6 @@
 <script setup lang="ts">
 import {ref, useTemplateRef, version as vueVersion} from 'vue';
-const debugMode = ref<boolean>(import.meta.env.DEV);
-const debug_ = {
-	on: () => debugMode.value = true,
-	off: () => debugMode.value = false,
-	query: () => debugMode.value
-}
-declare global {
-	interface Window {
-		debug_: typeof debug_;
-	}
-}
-debugMode.value && (window.debug_ = Object.freeze(debug_));
+
 // debug info
 const debugInfo = {
 	name: __APP_NAME__,
@@ -23,6 +12,10 @@ const debugInfo = {
 	vue: vueVersion
 }
 
+function getDebugMode() {
+	return window.debug_.query();
+}
+
 const heart = useTemplateRef('heart');
 const heartbeat = ref<number>(0);
 function heartbeatEvent() {
@@ -30,7 +23,7 @@ function heartbeatEvent() {
 	console.log('heartbeat:', heartbeat.value);
 	heart?.value?.classList.toggle('heartbeat');
 	setTimeout(() => heart?.value?.classList.toggle('heartbeat'), 200);
-	(heartbeat.value === 5) && debug_.on();
+	(heartbeat.value === 5) && window.debug_.on() && document.getElementById('title-version')?.classList.add('debug');
 	setTimeout(() => heartbeat.value = 0, 5000);
 }
 </script>
@@ -42,7 +35,7 @@ function heartbeatEvent() {
 		<span class="ft-item">Made with <i id="heart" ref="heart" @click.prevent="heartbeatEvent">❤️</i> by <a href="https://about.latedream.cn/" target="_blank" rel="noopener">LateDream</a></span>
 	</div>
 
-	<details v-if="debugMode" class="debug-info">
+	<details v-if="getDebugMode()" class="debug-info">
 		<summary>🔧 Debug Info<span class="__details-angle">
 			<svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" fill="currentColor"><path d="M472.064 272.448l-399.232 399.232c-22.08 22.08-22.08 57.792 0 79.872 22.016 22.016 57.792 22.08 79.872 0L512 392.256l359.296 359.296c22.016 22.016 57.792 22.08 79.872 0 22.08-22.08 22.016-57.792 0-79.872L551.936 272.448C529.856 250.432 494.144 250.432 472.064 272.448z"></path></svg>
 		</span></summary>
@@ -60,7 +53,7 @@ function heartbeatEvent() {
 		display: block;
 		font-size: 70%;
 		padding: 0.5rem;
-		font-family: 'Fira Code', 'Courier New', Courier, monospace;
+		font-family: 'Fira Code', 'Lucida Console', 'Consolas', monospace;
 	}
 }
 #footer {
