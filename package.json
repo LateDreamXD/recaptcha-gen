@@ -1,6 +1,6 @@
 {
   "name": "recaptcha-gen",
-  "version": "4.0-pre1",
+  "version": "4.0-pre2",
   "type": "module",
   "license": "MIT",
   "private": true,
