@@ -25,6 +25,9 @@ function superMobileMode(target: HTMLInputElement) {
 	} else {
 		target.checked = false;
 		target.disabled = true;
+		const label = target.parentElement!.querySelector('label')!;
+		label.style.color = 'gray', label.parentElement!.style.cursor = 'not-allowed';
+		label.textContent = '此功能仅限移动设备使用';
 	}
 }
 </script>
