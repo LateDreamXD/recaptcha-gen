@@ -7,6 +7,8 @@ const picNum = ref<number>(9);
 const mainRef = useTemplateRef<HTMLDivElement>('main');
 const showTip = ref<boolean>(true);
 const showCtrls = ref<boolean>(true);
+const singlePicMode = ref<boolean>(false);
+const singlePicFillMode = ref<PicFillMode>('fill');
 
 const lowZoomMode = (value: boolean) => {
 	mainRef.value!.classList.toggle('low-zoom-mode', value);
@@ -25,20 +27,21 @@ const setImg = (target: HTMLImageElement) => {
 	});
 }
 
-const setPicNum = (num: number) => (picIndex.value = 4) && (picNum.value = num);
-
+const setPicNum = (num: number) => picNum.value = num;
 
 defineExpose({
 	mainNode: mainRef,
 	lowZoomMode,
 	showTip,
 	showCtrls,
-	setPicNum
+	setPicNum,
+	singlePicMode,
+	singlePicFillMode,
 });
 </script>
 
 <template>
-	<div class="low-zoom-mode" ref="main" style="">
+	<div class="low-zoom-mode" ref="main" :style="singlePicMode && {'min-width': '400px', 'min-height': '580px'}">
 		<div id="rc-imageselect" aria-modal="true" role="dialog">
 			<div class="rc-imageselect-response-field"></div><span class="rc-imageselect-tabloop-begin"
 				tabindex="0"></span>
@@ -48,8 +51,8 @@ defineExpose({
 						<div class="rc-imageselect-desc-no-canonical" style="width: 352px; font-size: 12px; margin-top: -8px;">
 							<span contenteditable>请选择包含</span>
 							<span contenteditable style="font-size: 28px; font-weight: bold;">晚梦</span>
-							<span contenteditable>的所有图片。</span>
-							<span contenteditable v-if="showTip" style="font-size: 14px;">在没有新图片可以点按后，请点击“验证”。</span>
+							<span contenteditable>的所有图{{ singlePicMode? '块': '片' }}。</span>
+							<span contenteditable v-if="showTip" style="font-size: 14px;" v-text="singlePicMode? '': '在没有新图片可以点按后，请点击“验证”。'"></span>
 						</div>
 					</div>
 					<div class="rc-imageselect-progress"></div>
@@ -58,13 +61,24 @@ defineExpose({
 					<div id="rc-imageselect-target" class="rc-imageselect-target" dir="ltr" role="presentation"
 						aria-hidden="true">
 						<table class="rc-imageselect-table-33">
-							<tbody>
+							<tbody v-if="singlePicMode">
+								<img @click="setImg(($event.target as HTMLImageElement))"
+									 src="https://about.latedream.cn/avatar"
+									 id="single-pic" :style="{objectFit: singlePicFillMode}" />
+								<tr v-for="index in Math.floor(Math.sqrt(picNum))" :key="index" style="pointer-events: none;">
+									<td v-for="index in Math.floor(Math.sqrt(picNum))" :key="index" role="button" class="rc-imageselect-tile" aria-label="图片验证"
+										style="width: 126px; height: 126px; position: relative;">
+										<div style="width: 100%; height: 100%; position: absolute; left: 0; top: 0; z-index: 1; background-color: transparent; border: 1px solid white;"></div>
+									</td>
+								</tr>
+							</tbody>
+							<tbody v-else>
 								<tr v-for="index in Math.floor(Math.sqrt(picNum))" :key="index">
 									<td v-for="index in Math.floor(Math.sqrt(picNum))" :key="index" role="button" class="rc-imageselect-tile" aria-label="图片验证">
 										<div class="rc-image-tile-target">
 											<div class="rc-image-tile-wrapper" style="width: 126px; height: 126px">
 												<img @click="setImg(($event.target as HTMLImageElement))" class="rc-image-tile-33"
-													src="https://about.latedream.cn/assets/statics/avatar.webp"
+													src="https://about.latedream.cn/avatar"
 													alt="" style="top:0%;">
 												<div class="rc-image-tile-overlay"></div>
 											</div>
@@ -117,5 +131,12 @@ defineExpose({
 .low-zoom-mode .rc-image-tile-33 {
 	width: 100%;
 	height: 100%;
+}
+#single-pic {
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	left: 0;
+	z-index: 0;
 }
 </style>

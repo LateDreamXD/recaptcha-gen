@@ -10,6 +10,11 @@ const switchLowZoomMode = (value: boolean) => previewRef.value?.lowZoomMode(valu
 const switchTip = (value: boolean) => previewRef.value!.showTip = value;
 const switchCtrls = (value: boolean) => previewRef.value!.showCtrls = value;
 const setPicNum = (num: number) => previewRef.value!.setPicNum(num);
+const SPM = {
+	set: (value: boolean) => previewRef.value!.singlePicMode = value,
+	get: () => previewRef.value!.singlePicMode,
+	setFillMode: (mode: PicFillMode) => previewRef.value!.singlePicFillMode = mode,
+}
 </script>
 
 <template>
@@ -31,6 +36,8 @@ const setPicNum = (num: number) => previewRef.value!.setPicNum(num);
 					 :switchTip="switchTip"
 					 :switchCtrls="switchCtrls"
 					 :setPicNum="setPicNum"
+					 :SPM="SPM"
+					 
 					/>
 
 			<Footer />

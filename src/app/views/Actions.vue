@@ -11,6 +11,11 @@ defineProps({
 	lowZoomMode: Function,
 	switchCtrls: Function,
 	switchTip: Function,
+	SPM: {
+		get: Function,
+		set: Function,
+		setFillMode: Function,
+	}
 });
 
 // @ts-ignore
@@ -44,29 +49,43 @@ function superMobileMode(target: HTMLInputElement) {
 		</div>
 		<div class="act-group" data-title="选项">
 			<div class="group-content">
-			<span v-if="false" class="act-item">
-				<label for="text">要找出的目标名字:</label>
-				<input @input="setTargetText!(($event.target as HTMLInputElement).value)" type="text" id="text" value="晚梦" />
-			</span>
-			<span class="act-item">
-				<label for="pic-num" :data-tooltip="`会被开平方根, 所以可能出现实际数量少于设定值的情况. 较多的图片数量更推荐使用桌面设备. (${limitedMode? '为了你的设备考虑, 最高 500': '无限制? 你疯了吗?'})`"
-				:style="{'border-color': limitedMode? 'initial': 'red'}"
-				>图片数量</label>
-				<input @input="// @ts-ignore
-				setPicNum!(Math.min(limitedMode? 500: Infinity, Math.max(+$event.target.value || 9, 9)))" type="number" id="pic-num" ref="pic-num" value="9" max="500" placeholder="9" />
-			</span>
-			<span class="act-item">
-				<input checked @click="lowZoomMode!(($event.target as HTMLInputElement).checked)" type="checkbox" role="switch" id="low-pixel-imgs-support" />
-				<label for="low-pixel-imgs-support" data-tooltip="如果图片有缩放问题可以尝试开/关此选项">低缩放率模式</label>
-			</span>
-			<span class="act-item">
-				<input checked @click="switchCtrls!(($event.target as HTMLInputElement).checked)" type="checkbox" role="switch" id="show-ctrl-panel" />
-				<label for="show-ctrl-panel">显示<span data-tooltip="就是验证按钮旁边的刷新、音频验证和帮助按钮">控制按钮</span></label>
-			</span>
-			<span class="act-item">
-				<input checked @click="switchTip!(($event.target as HTMLInputElement).checked)" type="checkbox" role="switch" id="show-tip" />
-				<label for="show-tip">显示<span data-tooltip="就是「在没有新图片可以点按后，请点击“验证”。」这行字">提示信息</span></label>
-			</span></div>
+				<span v-if="false" class="act-item">
+					<label for="text">要找出的目标名字:</label>
+					<input @input="setTargetText!(($event.target as HTMLInputElement).value)" type="text" id="text" value="晚梦" />
+				</span>
+				<span class="act-item">
+					多图模式 <input @click="SPM.set(($event.target as HTMLInputElement).checked)" type="checkbox" role="switch" style="margin-left: 0.6rem;" /> 单图模式
+				</span>
+				<span class="act-item">
+					<label for="pic-num" :data-tooltip="`会被开平方根, 所以可能出现实际数量少于设定值的情况. 较多的图片数量更推荐使用桌面设备. (${limitedMode? '为了你的设备考虑, 最高 500': '无限制? 你疯了吗?'})`"
+					:style="{'border-color': limitedMode? 'initial': 'red'}"
+					>图{{ SPM.get()? '块': '片' }}数量</label>
+					<input @input="// @ts-ignore
+					setPicNum!(Math.min(limitedMode? 500: Infinity, Math.max(+$event.target.value || 9, 9)))" type="number" id="pic-num" ref="pic-num" value="9" max="500" placeholder="9" />
+				</span>
+				<span class="act-item" v-if="SPM.get()">
+					<label for="single-pic-fill-mode" style="display: contents;">图片填充模式</label>
+					<select id="single-pic-fill-mode" @change="SPM.setFillMode(($event.target as HTMLSelectElement).value)">
+						<option value="contain">包含</option>
+						<option value="fill" selected>填充</option>
+						<option value="cover">覆盖</option>
+						<option value="none">无</option>
+						<option value="scale-down">缩小</option>
+					</select>
+				</span>
+				<span class="act-item" v-else>
+					<input checked @click="lowZoomMode!(($event.target as HTMLInputElement).checked)" type="checkbox" role="switch" id="low-pixel-imgs-support" />
+					<label for="low-pixel-imgs-support" data-tooltip="如果图片有缩放问题可以尝试开/关此选项">低缩放率模式</label>
+				</span>
+				<span class="act-item">
+					<input checked @click="switchCtrls!(($event.target as HTMLInputElement).checked)" type="checkbox" role="switch" id="show-ctrl-panel" />
+					<label for="show-ctrl-panel">显示<span data-tooltip="就是验证按钮旁边的刷新、音频验证和帮助按钮">控制按钮</span></label>
+				</span>
+				<span class="act-item" v-if="!SPM.get()">
+					<input checked @click="switchTip!(($event.target as HTMLInputElement).checked)" type="checkbox" role="switch" id="show-tip" />
+					<label for="show-tip">显示<span data-tooltip="就是「在没有新图片可以点按后，请点击“验证”。」这行字">提示信息</span></label>
+				</span>
+			</div>
 		</div>
 		<div v-if="false" class="act-group" data-folded data-title="高级选项">
 			<span class="act-item">
@@ -118,7 +137,7 @@ function superMobileMode(target: HTMLInputElement) {
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	>input[type="number"] {
+	>input:not([type="checkbox"]):not([type="radio"]), >select {
 		height: 1.4rem;
 		width: 4rem;
 		padding: 0;
@@ -126,6 +145,7 @@ function superMobileMode(target: HTMLInputElement) {
 		// font-size: 0.8rem;
 		margin-left: 0.6rem;
 		margin-bottom: 0;
+		background-position: bottom right;
 	}
 	>input[role="switch"] {
 		margin-right: 0.6rem;

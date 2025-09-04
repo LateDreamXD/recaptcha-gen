@@ -1,0 +1,1 @@
+type PicFillMode = 'contain' | 'cover' | 'fill' | 'none' | 'scale-down';
