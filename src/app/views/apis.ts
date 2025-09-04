@@ -34,11 +34,6 @@ const genImg = async(target: Node) => {
 }
 
 const copyImg = async(target: HTMLDivElement, isMobile?: boolean) => {
-	const applyPermissions = await navigator.permissions.query({name: 'clipboard-write' as PermissionName});
-	if(applyPermissions.state === 'denied') {
-		alert('在你同意之前, 无法复制图片到剪贴板.');
-		return;
-	}
 	const img = base642blob(await genImg(target));
 	if(isMobile && !confirm('检测到你的设备为移动端, 可能不支持将图片复制到剪贴板.\n尽管如此, 你是否仍要复制图片到剪贴板?'))
 		return;
