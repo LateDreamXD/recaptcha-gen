@@ -54,7 +54,7 @@ function superMobileMode(target: HTMLInputElement) {
 					<input @input="setTargetText!(($event.target as HTMLInputElement).value)" type="text" id="text" value="晚梦" />
 				</span>
 				<span class="act-item">
-					多图模式 <input @click="SPM.set(($event.target as HTMLInputElement).checked)" type="checkbox" role="switch" style="margin-left: 0.6rem;" /> 单图模式
+					多图模式 <input class="picm-switch" @click="SPM.set(($event.target as HTMLInputElement).checked)" type="checkbox" role="switch" style="margin-left: 0.6rem;" /> 单图模式
 				</span>
 				<span class="act-item">
 					<label for="pic-num" :data-tooltip="`会被开平方根, 所以可能出现实际数量少于设定值的情况. 较多的图片数量更推荐使用桌面设备. (${limitedMode? '为了你的设备考虑, 最高 500': '无限制? 你疯了吗?'})`"
@@ -166,5 +166,23 @@ function superMobileMode(target: HTMLInputElement) {
 	min-width: var(--min-width);
 	display: flex;
 	justify-content: space-between;
+}
+
+.picm-switch {
+	// height: 2.5em !important;
+	// line-height: 2.5em !important;
+	// width: 4.5em !important;
+	&:not(:checked) {
+		--pico-border-color: #6f70b3 !important;
+		--pico-background-color: #6f70b3 !important;
+	}
+	&::before {
+		background-size: 0.5em;
+		background-position: center;
+		background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>image-multiple-outline</title><path d="M21,17H7V3H21M21,1H7A2,2 0 0,0 5,3V17A2,2 0 0,0 7,19H21A2,2 0 0,0 23,17V3A2,2 0 0,0 21,1M3,5H1V21A2,2 0 0,0 3,23H19V21H3M15.96,10.29L13.21,13.83L11.25,11.47L8.5,15H19.5L15.96,10.29Z" /></svg>');
+	}
+	&:checked::before {
+		background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>image-outline</title><path d="M19,19H5V5H19M19,3H5A2,2 0 0,0 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V5A2,2 0 0,0 19,3M13.96,12.29L11.21,15.83L9.25,13.47L6.5,17H17.5L13.96,12.29Z" /></svg>');
+	}
 }
 </style>
