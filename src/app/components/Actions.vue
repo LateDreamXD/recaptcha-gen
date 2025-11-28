@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { defineProps, ref } from 'vue';
-import actions from './apis';
+import actions from './shared/api';
 
 const limitedMode = ref(true);
 

@@ -1,23 +1,6 @@
-import DomToImage from 'dom-to-image';
+import { domToPng } from 'modern-screenshot';
+import { file2base64, base642blob } from '@libs/file-helper';
 
-const file2base64 = (file: File) => new Promise<string>((resolve, reject) => {
-	const reader = new FileReader();
-	reader.readAsDataURL(file);
-	reader.onload = () => resolve(reader.result as string);
-	reader.onerror = error => reject(error);
-});
-
-const base642blob = (base64: string) => {
-	const arr = base64.split(',');
-	const mime = arr[0].match(/:(.*?);/)![1];
-	const bstr = atob(arr[1]);
-	let n = bstr.length;
-	const u8arr = new Uint8Array(n);
-	while(n--) {
-		u8arr[n] = bstr.charCodeAt(n);
-	}
-	return new Blob([u8arr], {type: mime});
-}
 
 const changeImgs = async(files: FileList, targets: HTMLImageElement[]) => {
 	const imgs = await Promise.all(Array.from(files).map(file2base64));
@@ -30,7 +13,7 @@ const changeImgs = async(files: FileList, targets: HTMLImageElement[]) => {
 
 const genImg = async(target: Node) => {
 
-	return (await DomToImage.toPng(target));
+	return (await domToPng(target));
 }
 
 const copyImg = async(target: HTMLDivElement, isMobile?: boolean) => {
