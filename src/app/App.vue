@@ -1,20 +1,11 @@
 <script setup lang="ts">
 import {ref, defineAsyncComponent} from 'vue';
-const Preview = defineAsyncComponent(() => import('./components/Preview.vue'));
-const Actions = defineAsyncComponent(() => import('./components/Actions.vue'));
+import Preview from './components/Preview.vue';
+import Actions from './components/Actions.vue';
 const Footer = defineAsyncComponent(() => import('./components/Footer.vue'));
-const version = __APP_VERSION__;
-const previewRef = ref<InstanceType<typeof Preview>>();
+const version = $app_info.version;
 // const setTargetText = (text: string) => previewRef.value!.targetText = text;
-const switchLowZoomMode = (value: boolean) => previewRef.value?.lowZoomMode(value);
-const switchTip = (value: boolean) => previewRef.value!.showTip = value;
-const switchCtrls = (value: boolean) => previewRef.value!.showCtrls = value;
-const setPicNum = (num: number) => previewRef.value!.setPicNum(num);
-const SPM = {
-	set: (value: boolean) => previewRef.value!.singlePicMode = value,
-	get: () => previewRef.value!.singlePicMode,
-	setFillMode: (mode: PicFillMode) => previewRef.value!.singlePicFillMode = mode,
-}
+const previewRef = ref<InstanceType<typeof Preview>>();
 </script>
 
 <template>
@@ -31,13 +22,17 @@ const SPM = {
 
 		<div id="app-footer">
 			<Actions
-					 :lowZoomMode="switchLowZoomMode"
+					 :lowZoomMode="previewRef?.lowZoomMode!"
 					 :mainNode="previewRef?.mainNode!"
-					 :switchTip="switchTip"
-					 :switchCtrls="switchCtrls"
-					 :setPicNum="setPicNum"
-					 :SPM="SPM"
-					 
+					 :switchTip="previewRef?.showTip!"
+					 :switchCtrls="previewRef?.showCtrls!"
+					 :setPicNum2="previewRef?.setPicNum2!"
+					 :SPM="{
+						get: () => previewRef?.getSinglePicMode()!,
+						set: (value: boolean) => previewRef?.switchSinglePicMode(value),
+						setFillMode: (value: PicFillMode) => previewRef?.setSinglePicFillMode(value),
+						getFillMode: () => previewRef?.getSinglePicFillMode()!,
+					 }"
 					/>
 
 			<Footer />

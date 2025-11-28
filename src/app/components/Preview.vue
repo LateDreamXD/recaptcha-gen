@@ -2,8 +2,12 @@
 import {useTemplateRef, ref} from 'vue';
 import {file2base64} from './shared/api';
 
-const picNum = ref<number>(9);
+// const picNum = ref<number>(9);
 // const picIndex = ref<number>(4);
+const picNum2 = {
+	x: ref<number>(3),
+	y: ref<number>(3)
+}
 const mainRef = useTemplateRef<HTMLDivElement>('main');
 const showTip = ref<boolean>(true);
 const showCtrls = ref<boolean>(true);
@@ -27,16 +31,29 @@ const setImg = (target: HTMLImageElement) => {
 	});
 }
 
-const setPicNum = (num: number) => picNum.value = num;
+// const setPicNum = (num: number) => picNum.value = num;
 
 defineExpose({
 	mainNode: mainRef,
-	lowZoomMode,
-	showTip,
-	showCtrls,
-	setPicNum,
-	singlePicMode,
-	singlePicFillMode,
+	lowZoomMode: (value: boolean) => lowZoomMode(value),
+	showTip: (value: boolean) => showTip.value = value,
+	showCtrls: (value: boolean) => showCtrls.value = value,
+	// setPicNum,
+	setPicNum2: (num: {x: number, y: number}) => {
+		picNum2.x.value = num.x;
+		picNum2.y.value = num.y;
+		console.log('setPicNum2:', num, picNum2.x.value, picNum2.y.value);
+	},
+	getPicNum2: () => ({
+		x: picNum2.x.value,
+		y: picNum2.y.value,
+	}),
+	switchSinglePicMode: (value: boolean) => singlePicMode.value = value,
+	getSinglePicMode: () => singlePicMode.value,
+	setSinglePicFillMode: (value: PicFillMode) => singlePicFillMode.value = value,
+	getSinglePicFillMode: () => singlePicFillMode.value,
+	// singlePicMode,
+	// singlePicFillMode,
 });
 </script>
 
@@ -65,16 +82,16 @@ defineExpose({
 								<img @click="setImg(($event.target as HTMLImageElement))"
 									 src="https://about.latedream.cn/assets/statics/avatar.webp"
 									 id="single-pic" :style="{objectFit: singlePicFillMode}" />
-								<tr v-for="index in Math.floor(Math.sqrt(picNum))" :key="index" style="pointer-events: none;">
-									<td v-for="index in Math.floor(Math.sqrt(picNum))" :key="index" role="button" class="rc-imageselect-tile" aria-label="图片验证"
+								<tr v-for="index in picNum2.y.value" :key="index" style="pointer-events: none;">
+									<td v-for="index in picNum2.x.value" :key="index" role="button" class="rc-imageselect-tile" aria-label="图片验证"
 										style="width: 126px; height: 126px; position: relative;">
 										<div style="width: 100%; height: 100%; position: absolute; left: 0; top: 0; z-index: 1; background-color: transparent; border: 1px solid white;"></div>
 									</td>
 								</tr>
 							</tbody>
 							<tbody v-else>
-								<tr v-for="index in Math.floor(Math.sqrt(picNum))" :key="index">
-									<td v-for="index in Math.floor(Math.sqrt(picNum))" :key="index" role="button" class="rc-imageselect-tile" aria-label="图片验证">
+								<tr v-for="index in picNum2.y.value" :key="index">
+									<td v-for="index in picNum2.x.value" :key="index" role="button" class="rc-imageselect-tile" aria-label="图片验证">
 										<div class="rc-image-tile-target">
 											<div class="rc-image-tile-wrapper" style="width: 126px; height: 126px">
 												<img @click="setImg(($event.target as HTMLImageElement))" class="rc-image-tile-33"

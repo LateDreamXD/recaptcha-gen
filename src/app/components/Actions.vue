@@ -1,28 +1,45 @@
 <script setup lang="ts">
-import { defineProps, ref } from 'vue';
-import actions from './shared/api';
+import { ref, reactive, h, computed } from 'vue';
+import actions, { openDialog } from './shared/api';
 
-const limitedMode = ref(true);
+const unlimitedMode = ref(!1);
+const lockXY = ref(false);
 
-defineProps({
+const debugInfo = $app_info;
+
+const debug = computed(() => $app_info.debug);
+
+const props = defineProps<{
 	mainNode: HTMLDivElement,
-	setPicNum: Function,
-	setTargetText: Function,
-	lowZoomMode: Function,
-	switchCtrls: Function,
-	switchTip: Function,
+	// setPicNum: (value: number) => void,
+	setPicNum2: (value: {x: number, y: number}) => void,
+	// setTargetText: Function,
+	lowZoomMode: (value: boolean) => void,
+	switchCtrls: (value: boolean) => void,
+	switchTip: (value: boolean) => void,
 	SPM: {
-		get: Function,
-		set: Function,
-		setFillMode: Function,
+		get: () => boolean,
+		set: (value: boolean) => void,
+		setFillMode: (value: PicFillMode) => void,
+		getFillMode: () => PicFillMode,
 	}
+}>();
+
+const options = reactive({
+	picNum2: {
+		x: 3,
+		y: 3,
+	},
+	singlePicMode: props.SPM.get(),
+	singlePicFillMode: props.SPM.getFillMode(),
+	showCtrlPanel: true,
+	showTip: true,
+	lowZoomMode: !0,
 });
 
 // @ts-ignore
 const isMobile = ("userAgentData" in navigator)? navigator.userAgentData.mobile:
 	matchMedia('(max-width: 768px)').matches;
-
-const getDebugMode = () => window.debug_.query();
 
 function superMobileMode(target: HTMLInputElement) {
 	if(isMobile) {
@@ -34,6 +51,25 @@ function superMobileMode(target: HTMLInputElement) {
 		label.style.color = 'gray', label.parentElement!.style.cursor = 'not-allowed';
 		label.textContent = '此功能仅限移动设备使用';
 	}
+}
+
+function copyDebugInfo() {
+	navigator.clipboard.writeText(JSON.stringify(debugInfo, null, 2)).then(() => {
+		openDialog('复制成功', {closeable: !1});
+	}).catch((e: Error) => {
+		openDialog(h('div', {}, [
+			h('p', {}, '复制失败!'),
+			h('p', {}, e.message)
+		]), {closeable: !1});
+	});
+}
+
+function updatePicNum2(isX = !1) {
+	if(!unlimitedMode.value && (options.picNum2.x > 50 || options.picNum2.y > 50))
+		return;
+	if(isX && lockXY.value)
+		options.picNum2.y = options.picNum2.x;
+	props.setPicNum2({x: options.picNum2.x, y: options.picNum2.y});
 }
 </script>
 
@@ -49,40 +85,37 @@ function superMobileMode(target: HTMLInputElement) {
 		</div>
 		<div class="act-group" data-title="选项">
 			<div class="group-content">
-				<span v-if="false" class="act-item">
-					<label for="text">要找出的目标名字:</label>
-					<input @input="setTargetText!(($event.target as HTMLInputElement).value)" type="text" id="text" value="晚梦" />
+				<span class="act-item">
+					多图模式 <input class="picm-switch" @change="SPM.set(options.singlePicMode)" v-model="options.singlePicMode" type="checkbox" role="switch" style="margin-left: 0.6rem;" /> 单图模式
 				</span>
 				<span class="act-item">
-					多图模式 <input class="picm-switch" @click="SPM.set(($event.target as HTMLInputElement).checked)" type="checkbox" role="switch" style="margin-left: 0.6rem;" /> 单图模式
-				</span>
-				<span class="act-item">
-					<label for="pic-num" :data-tooltip="`会被开平方根, 所以可能出现实际数量少于设定值的情况. 较多的图片数量更推荐使用桌面设备. (${limitedMode? '为了你的设备考虑, 最高 500': '无限制? 你疯了吗?'})`"
-					:style="{'border-color': limitedMode? 'initial': 'red'}"
+					<label for="pic-num"
+						:style="{'border-color': unlimitedMode? 'initial': 'red'}"
 					>图{{ SPM.get()? '块': '片' }}数量</label>
-					<input @input="// @ts-ignore
-					setPicNum!(Math.min(limitedMode? 500: Infinity, Math.max(+$event.target.value || 9, 9)))" type="number" id="pic-num" ref="pic-num" value="9" max="500" placeholder="9" />
+					<input style="margin-right: 0.2rem;" @input="updatePicNum2(true)" v-model="options.picNum2.x" type="number" id="pic-num-x" ref="pic-num" value="3" :max="unlimitedMode? Infinity: 50" placeholder="3" />
+					x
+					<input style="margin-left: 0.2rem;" @input="updatePicNum2()" v-model="options.picNum2.y" :disabled="lockXY" type="number" id="pic-num-y" ref="pic-num" value="3" :max="unlimitedMode? Infinity: 50" placeholder="3" />
 				</span>
-				<span class="act-item" v-if="SPM.get()">
+				<span class="act-item" v-if="options.singlePicMode">
 					<label for="single-pic-fill-mode" style="display: contents;">图片填充模式</label>
-					<select id="single-pic-fill-mode" @change="SPM.setFillMode(($event.target as HTMLSelectElement).value)">
+					<select id="single-pic-fill-mode" @change="SPM.setFillMode(options.singlePicFillMode)" v-model="options.singlePicFillMode">
 						<option value="contain">包含</option>
-						<option value="fill" selected>填充</option>
+						<option value="fill" selected>*填充</option>
 						<option value="cover">覆盖</option>
 						<option value="none">无</option>
 						<option value="scale-down">缩小</option>
 					</select>
 				</span>
 				<span class="act-item" v-else>
-					<input checked @click="lowZoomMode!(($event.target as HTMLInputElement).checked)" type="checkbox" role="switch" id="low-pixel-imgs-support" />
+					<input @change="lowZoomMode(options.lowZoomMode)" v-model="options.lowZoomMode" :checked="options.lowZoomMode" type="checkbox" role="switch" id="low-pixel-imgs-support" />
 					<label for="low-pixel-imgs-support" data-tooltip="如果图片有缩放问题可以尝试开/关此选项">低缩放率模式</label>
 				</span>
 				<span class="act-item">
-					<input checked @click="switchCtrls!(($event.target as HTMLInputElement).checked)" type="checkbox" role="switch" id="show-ctrl-panel" />
+					<input @change="switchCtrls(options.showCtrlPanel)" v-model="options.showCtrlPanel" :checked="options.showCtrlPanel" type="checkbox" role="switch" id="show-ctrl-panel" />
 					<label for="show-ctrl-panel">显示<span data-tooltip="就是验证按钮旁边的刷新、音频验证和帮助按钮">控制按钮</span></label>
 				</span>
-				<span class="act-item" v-if="!SPM.get()">
-					<input checked @click="switchTip!(($event.target as HTMLInputElement).checked)" type="checkbox" role="switch" id="show-tip" />
+				<span class="act-item" v-if="!options.singlePicMode">
+					<input @change="switchTip(options.showTip)" v-model="options.showTip" :checked="options.showTip" type="checkbox" role="switch" id="show-tip" />
 					<label for="show-tip">显示<span data-tooltip="就是「在没有新图片可以点按后，请点击“验证”。」这行字">提示信息</span></label>
 				</span>
 			</div>
@@ -91,19 +124,28 @@ function superMobileMode(target: HTMLInputElement) {
 			<span class="act-item">
 			</span>
 		</div>
-		<div v-if="getDebugMode()" class="act-group" data-title="Debug Funcs">
+		<div v-if="debug" class="act-group" data-title="调试选项">
 			<span class="act-item">
 				<input @click="superMobileMode($event.target as HTMLInputElement)" type="checkbox" role="switch" id="super-mobile-mode" />
-				<label for="super-mobile-mode" data-tooltip="unlock zoom on mobile devices">super mobile mode</label>
+				<label for="super-mobile-mode" data-tooltip="在移动设备解除缩放限制">移动设备增强</label>
 			</span>
 			<span class="act-item">
-				<input class="danger-switch" @click="limitedMode = !limitedMode" type="checkbox" role="switch" id="limited-mode" />
-				<label for="limited-mode" data-tooltip="this may destroy your device!" style="color: red;">remove limit of pic num</label>
+				<input class="danger-switch" v-model="unlimitedMode" type="checkbox" role="switch" id="limited-mode" />
+				<label for="limited-mode" data-tooltip="这可能导致性能问题, 请谨慎使用" style="color: red;">移除数量限制</label>
+			</span>
+			<span class="act-item">
+				<button class="small" @click.prevent="openDialog(
+					h('pre', {}, h('code', {style: {
+						'font-size': '16px',
+						'font-family': 'Fira Code, Lucida Console, Consolas, monospace'
+					}}, JSON.stringify(debugInfo, null, 2))),
+					{title: '调试信息', confirmText: '复制', confirmCallback: copyDebugInfo}
+				)">调试信息</button>
 			</span>
 		</div>
 		<div class="btn-panel">
-			<button @click.prevent="actions.copyImg(mainNode!, isMobile)" class="secondary" type="button" id="copy">复制图片到剪贴板</button>
-			<button @click.prevent="actions.saveImg(mainNode!)" class="primary" type="button" id="save">保存图片到本地</button>
+			<button @click.prevent="actions.copyImg(mainNode, isMobile)" class="secondary" type="button" id="copy">复制图片到剪贴板</button>
+			<button @click.prevent="actions.saveImg(mainNode)" class="primary" type="button" id="save">保存图片到本地</button>
 		</div>
 	</div>
 </template>
@@ -137,15 +179,20 @@ function superMobileMode(target: HTMLInputElement) {
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	>input:not([type="checkbox"]):not([type="radio"]), >select {
-		height: 1.4rem;
-		width: 4rem;
-		padding: 0;
-		padding-left: 0.2rem;
-		// font-size: 0.8rem;
-		margin-left: 0.6rem;
-		margin-bottom: 0;
-		background-position: bottom right;
+	>button.small {
+		margin-top: 0.4rem;
+		padding: 0.2rem 0.4rem;
+		font-size: 0.8rem;
+	}
+	>input:not([type="checkbox"]):not([type="radio"]), &>select {
+		    height: 1.4rem;
+			width: 4rem;
+			padding: 0;
+			padding-inline: 0 !important;
+			padding-left: 0.2rem !important;
+			margin-left: 0.6rem;
+			margin-bottom: 0;
+			background-position: bottom right !important;
 	}
 	>input[role="switch"] {
 		margin-right: 0.6rem;
