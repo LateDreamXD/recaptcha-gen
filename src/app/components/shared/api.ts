@@ -1,3 +1,4 @@
+import { defineAsyncComponent, h, render, type VNode } from 'vue';
 import { domToPng } from 'modern-screenshot';
 import { file2base64, base642blob } from '@libs/file-helper';
 
@@ -32,5 +33,29 @@ const saveImg = async(target: HTMLDivElement) => {
 	a.click();
 	a.remove();
 }
-export {file2base64, base642blob, changeImgs, genImg, copyImg, saveImg};
+
+const openDialog = (content?: string | VNode, options?: {
+	title?: string,
+	closeable?: boolean,
+	confirmText?: string
+	cancelCallback?: () => void
+	confirmCallback?: () => void
+}) => {
+	const node = document.createElement('div');
+	node.classList.add('dialog-node');
+	const Dialog = defineAsyncComponent(() => import('../Dialog.vue'));
+	const dialog = h(Dialog, {
+		title: options?.title,
+		closeable: options?.closeable,
+		confirmText: options?.confirmText,
+		_close: () => (node.remove(), !0),
+		onCancel: options?.cancelCallback,
+		onConfirm: options?.confirmCallback,
+	}, { default: () => content });
+	render(dialog, node);
+	document.body.appendChild(node);
+	return dialog;
+}
+
+export {file2base64, base642blob, changeImgs, genImg, copyImg, saveImg, openDialog};
 export default {changeImgs, copyImg, saveImg};
