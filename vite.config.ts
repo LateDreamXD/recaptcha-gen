@@ -17,19 +17,13 @@ export default <UserConfig>{
 	plugins: [vue()],
 	base: './',
 	define: {
-		// __APP_NAME__: JSON.stringify(process.env.npm_package_name),
-		// __APP_VERSION__: JSON.stringify(process.env.npm_package_version),
-		$app_info: JSON.stringify({
-			name: process.env.npm_package_name,
-			version: process.env.npm_package_version,
-			build_time: new Date().toISOString(),
-			is_pre_build: process.env.npm_package_version!.includes('pre'),
-			libs: {
-				'@picocss/pico': getPackageVersion('@picocss/pico'),
-				'modern-screenshot': getPackageVersion('modern-screenshot'),
-				vue: vueVer,
-			},
-		}),
+		__APP_NAME__: JSON.stringify(process.env.npm_package_name),
+		__APP_VERSION__: JSON.stringify(process.env.npm_package_version),
+		__APP_BUILD_TIME__: JSON.stringify(new Date().toISOString()),
+		__APP_IS_PRE_BUILD__: JSON.stringify(process.env.npm_package_version!.includes('pre')),
+		pico_css: JSON.stringify(getPackageVersion('@picocss/pico')),
+		modern_screenshot: JSON.stringify(getPackageVersion('modern-screenshot')),
+		vue: JSON.stringify(vueVer),
 	},
 	resolve: {
 		alias: {
@@ -48,7 +42,8 @@ export default <UserConfig>{
 					'libs/vue': ['vue'],
 					'libs/modern-screenshot': ['modern-screenshot'],
 					'libs/file-helper': ['@libs/file-helper'],
-					'libs/system-checker': ['@libs/browser.min']
+					'libs/system-checker': ['@libs/browser.min'],
+					'libs/shared-api': ['@libs/shared-api'],
 				}
 			}
 		}

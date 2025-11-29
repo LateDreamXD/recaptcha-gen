@@ -1,18 +1,7 @@
-declare const $app_info: {
-	name: string;
-	version: string;
-	libs: Record<string, string>;
-	env: string;
-	debug: boolean;
-	device: {
-		type: string,
-		os: string,
-		platform: string,
-		arch: string,
-		bit?: number
-	};
-	browser: {
-		name: string,
-		version: string,
-	}
-}
+declare const __APP_NAME__: string;
+declare const __APP_VERSION__: string;
+declare const __APP_BUILD_TIME__: string;
+declare const __APP_IS_PRE_BUILD__: string;
+declare const pico_css: string;
+declare const modern_screenshot: string;
+declare const vue: string;

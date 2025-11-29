@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import {useTemplateRef, ref} from 'vue';
-import {file2base64} from './shared/api';
+import {file2base64} from '@libs/shared-api';
 
 // const picNum = ref<number>(9);
 // const picIndex = ref<number>(4);

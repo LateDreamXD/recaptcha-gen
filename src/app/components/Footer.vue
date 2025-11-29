@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import {ref} from 'vue';
+import { activeDebug } from './store';
 
 const heartbeat = ref<number>(0);
 function heartbeatEvent(evt: EventTarget | null) {
@@ -7,7 +8,7 @@ function heartbeatEvent(evt: EventTarget | null) {
 	evt?.classList.toggle('heartbeat'); setTimeout(() => evt?.classList.toggle('heartbeat'), 200);
 	if(heartbeat.value >= 5) return;
 	heartbeat.value++;
-	(heartbeat.value === 5) && ($app_info.debug = !0) && document.getElementById('title-version')?.classList.add('debug');
+	(heartbeat.value === 5) && activeDebug() && document.getElementById('title-version')?.classList.add('debug');
 	setTimeout(() => heartbeat.value = 0, 5000);
 }
 </script>

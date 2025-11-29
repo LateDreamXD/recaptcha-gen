@@ -1,13 +1,10 @@
 <script setup lang="ts">
 import { ref, reactive, h, computed } from 'vue';
-import actions, { openDialog } from './shared/api';
+import actions, { openDialog } from '@libs/shared-api';
+import store from './store';
 
 const unlimitedMode = ref(!1);
 const lockXY = ref(false);
-
-const debugInfo = $app_info;
-
-const debug = computed(() => $app_info.debug);
 
 const props = defineProps<{
 	mainNode: HTMLDivElement,
@@ -54,7 +51,7 @@ function superMobileMode(target: HTMLInputElement) {
 }
 
 function copyDebugInfo() {
-	navigator.clipboard.writeText(JSON.stringify(debugInfo, null, 2)).then(() => {
+	navigator.clipboard.writeText(JSON.stringify(store.debugInfo, null, 2)).then(() => {
 		openDialog('复制成功', {closeable: !1});
 	}).catch((e: Error) => {
 		openDialog(h('div', {}, [
@@ -124,7 +121,7 @@ function updatePicNum2(isX = !1) {
 			<span class="act-item">
 			</span>
 		</div>
-		<div v-if="debug" class="act-group" data-title="调试选项">
+		<div v-if="store.debugInfo.debug" class="act-group" data-title="调试选项">
 			<span class="act-item">
 				<input @click="superMobileMode($event.target as HTMLInputElement)" type="checkbox" role="switch" id="super-mobile-mode" />
 				<label for="super-mobile-mode" data-tooltip="在移动设备解除缩放限制">移动设备增强</label>
@@ -138,7 +135,7 @@ function updatePicNum2(isX = !1) {
 					h('pre', {}, h('code', {style: {
 						'font-size': '16px',
 						'font-family': 'Fira Code, Lucida Console, Consolas, monospace'
-					}}, JSON.stringify(debugInfo, null, 2))),
+					}}, JSON.stringify(store.debugInfo, null, 2))),
 					{title: '调试信息', confirmText: '复制', confirmCallback: copyDebugInfo}
 				)">调试信息</button>
 			</span>

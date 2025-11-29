@@ -3,7 +3,7 @@ import {ref, defineAsyncComponent} from 'vue';
 import Preview from './components/Preview.vue';
 import Actions from './components/Actions.vue';
 const Footer = defineAsyncComponent(() => import('./components/Footer.vue'));
-const version = $app_info.version;
+const version = __APP_VERSION__;
 // const setTargetText = (text: string) => previewRef.value!.targetText = text;
 const previewRef = ref<InstanceType<typeof Preview>>();
 </script>

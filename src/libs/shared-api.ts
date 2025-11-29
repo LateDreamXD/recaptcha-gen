@@ -1,6 +1,6 @@
 import { defineAsyncComponent, h, render, type VNode } from 'vue';
 import { domToPng } from 'modern-screenshot';
-import { file2base64, base642blob } from '@libs/file-helper';
+import { file2base64, base642blob } from './file-helper';
 
 
 const changeImgs = async(files: FileList, targets: HTMLImageElement[]) => {
@@ -34,7 +34,7 @@ const openDialog = (content?: string | VNode, options?: {
 }) => {
 	const node = document.createElement('div');
 	node.classList.add('dialog-node');
-	const Dialog = defineAsyncComponent(() => import('../Dialog.vue'));
+	const Dialog = defineAsyncComponent(() => import('@app/components/Dialog.vue'));
 	const dialog = h(Dialog, {
 		title: options?.title,
 		closeable: options?.closeable,
